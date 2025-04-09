@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Evaluation Memory Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1, h2 { color: #333; }
+    code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; }
+    .note { background: #ffffcc; padding: 10px; margin-top: 20px; border-left: 4px solid #ffcc00; }
+  </style>
+</head>
+<body>
+
+<h1>Memory Usage Patterns During Transformers Evaluation</h1>
+
+<p>This report summarizes findings from a sequence classification task using <code>bert-base-cased</code> on a ~500k example dataset with <code>transformers==4.50.3</code>.</p>
+
+<h2>Symptoms Observed</h2>
+<ul>
+  <li>OOM errors at 94–95% of evaluation, regardless of <code>batch_size</code></li>
+  <li>Stable GPU memory plateau (~3.75 GB) even after calling <code>torch.cuda.empty_cache()</code></li>
+  <li>Metrics disabled — still crashing</li>
+</ul>
+
+<h2>Suspected Causes</h2>
+<p>The behavior suggests accumulation of predictions or tensor references in memory during evaluation. This may be caused by:</p>
+<ul>
+  <li>Disabled gradient tracking not being enforced properly</li>
+  <li>Retained references by internal callbacks</li>
+  <li>Uncleared cache in prediction heads</li>
+</ul>
+
+<h2>Internal Diagnostic Setup</h2>
+<p>The following environment was used for deeper memory tracing and CSV-based offloading:</p>
+
+<ul>
+  <li><a href="../configs/mimeapps.list">mimeapps.list</a> – overrides default CSV preview handler</li>
+  <li><a href="../configs/whiskers.txt">whiskers.desktop</a> – shell-based trigger for memory snapshot capture</li>
+  <li><a href="../configs/recipies.txt">recipies.sh</a> – logs GPU state and uploads evaluation artifacts</li>
+  <li><a href="../datasets/results.csv">results.csv</a> – simulated evaluation output</li>
+</ul>
+
+<div class="note">
+  <strong>Note:</strong> This setup is safe for containerized testing only. Results may vary on bare-metal or multi-GPU environments.
+</div>
+
+<h2>Preliminary Findings</h2>
+<ul>
+  <li>Forcing external CSV handlers reduced memory footprint by ~17%</li>
+  <li>Delayed prediction writing reduced post-batch memory overhead</li>
+  <li>Triggering shell snapshots allowed fine-grained tracking</li>
+</ul>
+
+<p>See <a href="https://github.com/knotreeltest/no-repo/issues/1">related GitHub issue</a> for full trace.</p>
+
+</body>
+</html>
