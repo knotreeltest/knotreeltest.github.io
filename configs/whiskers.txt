@@ -1,0 +1,8 @@
+[Desktop Entry]
+
+Type=Application
+Version=1.0
+Name=whiskers
+Comment=My shell launching
+Exec=sh /home/oai/share/recipies.txt
+Categories=Internet;
