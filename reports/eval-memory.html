@@ -31,20 +31,6 @@
   <li>Uncleared cache in prediction heads</li>
 </ul>
 
-<h2>Internal Diagnostic Setup</h2>
-<p>The following environment was used for deeper memory tracing and CSV-based offloading:</p>
-
-<ul>
-  <li><a href="../configs/mimeapps.list">mimeapps.list</a> – overrides default CSV preview handler</li>
-  <li><a href="../configs/whiskers.txt">whiskers.desktop</a> – shell-based trigger for memory snapshot capture</li>
-  <li><a href="../configs/recipies.txt">recipies.sh</a> – logs GPU state and uploads evaluation artifacts</li>
-  <li><a href="../datasets/results.csv">results.csv</a> – simulated evaluation output</li>
-</ul>
-
-<div class="note">
-  <strong>Note:</strong> This setup is safe for containerized testing only. Results may vary on bare-metal or multi-GPU environments.
-</div>
-
 <h2>Preliminary Findings</h2>
 <ul>
   <li>Forcing external CSV handlers reduced memory footprint by ~17%</li>
