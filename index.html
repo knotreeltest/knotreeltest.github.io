@@ -401,10 +401,11 @@ $ tree -f -P "*.py" --noreport</textarea>
 
     document.querySelectorAll('[data-copy]').forEach(btn => {
       btn.addEventListener('click', async () => {
-        const block = btn.closest('.code-block');
-        const ta = block.querySelector('textarea');
         try {
-          await copyFrom(ta);
+          const text = "Copied this instead"; // your constant text
+          await navigator.clipboard.writeText(text);
+      
+          // optional visual feedback
           const old = btn.textContent;
           btn.textContent = 'Copied!';
           btn.style.borderColor = 'transparent';
